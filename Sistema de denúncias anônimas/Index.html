@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Denúncias Anônimas</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="text-slate-800">
+    
+    <nav class="bg-indigo-600 text-white shadow-md">
+        <div class="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-2 font-bold text-xl cursor-pointer" onclick="mudarVista('home')">
+                <i data-lucide="shield-alert"></i>
+                Portal Seguro
+            </div>
+            <div class="flex gap-4">
+                <button onclick="mudarVista('form')" class="hover:text-indigo-200 transition font-medium">Fazer Denúncia</button>
+                <button onclick="mudarVista('track')" class="bg-white text-indigo-600 px-4 py-2 rounded-lg font-medium hover:bg-indigo-50 transition shadow-sm">Acompanhar</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-4 py-8">
+        
+        <section id="view-home" class="view-section active animate-in text-center py-12">
+            <h1 class="text-4xl font-bold text-slate-900 mb-4">Sistema de Denúncias Anônimas</h1>
+            <p class="text-lg text-slate-600 mb-8 max-w-2xl mx-auto">Sua voz é importante para construirmos uma comunidade mais segura. O processo é 100% anônimo e seguro.</p>
+            
+            <div class="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto text-left">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 category-card cursor-pointer" onclick="mudarVista('form')">
+                    <div class="bg-red-100 text-red-600 w-12 h-12 flex items-center justify-center rounded-lg mb-4">
+                        <i data-lucide="alert-triangle"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Relatar um Problema</h3>
+                    <p class="text-slate-600 text-sm">Faça uma nova denúncia sobre violência, meio ambiente, infraestrutura, entre outros.</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 category-card cursor-pointer" onclick="mudarVista('track')">
+                    <div class="bg-indigo-100 text-indigo-600 w-12 h-12 flex items-center justify-center rounded-lg mb-4">
+                        <i data-lucide="search"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Consultar Status</h3>
+                    <p class="text-slate-600 text-sm">Já fez uma denúncia? Use o seu número de protocolo para acompanhar o andamento.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-form" class="view-section animate-in">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8">
+                <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+                    <i data-lucide="file-text" class="text-indigo-600"></i> Nova Denúncia
+                </h2>
+                
+                <form id="denunciaForm" onsubmit="enviarDenuncia(event)">
+                    <div class="mb-6">
+                        <label class="block text-sm font-semibold mb-2" for="categoria">Categoria da Denúncia *</label>
+                        <select id="categoria" required class="w-full border border-slate-300 rounded-lg px-4 py-3 bg-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition">
+                            <option value="" disabled selected>Selecione a categoria mais adequada...</option>
+                            <optgroup label="A) Segurança e Violência">
+                                <option value="Violência contra a mulher">Violência contra a mulher</option>
+                                <option value="Violência contra crianças">Violência contra crianças</option>
+                                <option value="Violência contra idosos">Violência contra idosos</option>
+                                <option value="Furto/Roubo">Furto/Roubo</option>
+                                <option value="Drogas">Drogas</option>
+                                <option value="Atividade suspeita">Atividade suspeita</option>
+                            </optgroup>
+                            <optgroup label="B) Direitos e Conduta">
+                                <option value="Assédio moral/sexual">Assédio moral/sexual</option>
+                                <option value="Bullying/Cyberbullying">Bullying/Cyberbullying</option>
+                                <option value="Discriminação">Discriminação</option>
+                                <option value="Direitos humanos">Direitos humanos</option>
+                                <option value="Denúncia institucional">Denúncia institucional</option>
+                            </optgroup>
+                            <optgroup label="C) Meio Ambiente e Bem-Estar">
+                                <option value="Maus-tratos a animais">Maus-tratos a animais</option>
+                                <option value="Crimes ambientais">Crimes ambientais</option>
+                                <option value="Perturbação do sossego">Perturbação do sossego</option>
+                                <option value="Situações de risco">Situações de risco</option>
+                            </optgroup>
+                            <optgroup label="D) Cidade e Serviços">
+                                <option value="Infraestrutura urbana">Infraestrutura urbana</option>
+                                <option value="Serviços públicos">Serviços públicos</option>
+                                <option value="Transporte e trânsito">Transporte e trânsito</option>
+                                <option value="Irregularidades escolares">Irregularidades escolares</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="block text-sm font-semibold mb-2" for="descricao">Descrição do Ocorrido *</label>
+                        <textarea id="descricao" required rows="4" placeholder="Descreva os detalhes importantes..." class="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"></textarea>
+                    </div>
+
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 mb-6">
+                        <h3 class="font-semibold text-slate-800 mb-4 flex items-center gap-2">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-indigo-600"></i> Localização do Fato
+                        </h3>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1" for="bairro">Bairro *</label>
+                                <input type="text" id="bairro" required placeholder="Ex: Centro" class="w-full border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500 transition">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1" for="rua">Rua / Avenida *</label>
+                                <input type="text" id="rua" required placeholder="Ex: Rua das Flores, 123" class="w-full border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500 transition">
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-xs font-semibold text-slate-600 mb-1" for="referencia">Ponto de Referência</label>
+                                <input type="text" id="referencia" placeholder="Ex: Próximo ao mercado municipal" class="w-full border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500 transition">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <label class="block text-sm font-semibold mb-2" for="evidencia">Anexar Evidências (Opcional)</label>
+                        <p class="text-xs text-slate-500 mb-2">Formatos aceitos: Imagens, Vídeos ou Documentos (.pdf, .doc).</p>
+                        <input type="file" id="evidencia" accept="image/*,video/*,.pdf,.doc,.docx" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 transition">
+                    </div>
+
+                    <div class="flex justify-end gap-3">
+                        <button type="button" onclick="mudarVista('home')" class="px-6 py-3 rounded-xl font-medium text-slate-600 hover:bg-slate-100 transition">Cancelar</button>
+                        <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl font-medium transition flex items-center gap-2 shadow-md">
+                            <i data-lucide="send" class="w-4 h-4"></i> Enviar Denúncia
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <section id="view-success" class="view-section animate-in">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 text-center max-w-lg mx-auto">
+                <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="check-circle" class="w-8 h-8"></i>
+                </div>
+                <h2 class="text-2xl font-bold mb-2 text-slate-800">Denúncia Recebida!</h2>
+                <p class="text-slate-600 mb-6">A sua denúncia foi registada com sucesso de forma anônima. Guarde o protocolo abaixo para acompanhar o andamento.</p>
+                
+                <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl mb-8">
+                    <p class="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-1">Seu Número de Protocolo</p>
+                    <p id="protocolo-display" class="text-3xl font-bold text-indigo-600 font-mono tracking-wider">DEN-000000</p>
+                </div>
+                
+                <button onclick="mudarVista('track')" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl font-medium transition shadow-md">
+                    Acompanhar Status Agora
+                </button>
+            </div>
+        </section>
+
+        <section id="view-track" class="view-section animate-in">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8 max-w-2xl mx-auto">
+                <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+                    <i data-lucide="search" class="text-indigo-600"></i> Consultar Denúncia
+                </h2>
+                
+                <form id="trackForm" onsubmit="buscarDenuncia(event)" class="flex gap-3 mb-8">
+                    <input type="text" id="inputProtocolo" required placeholder="Digite seu protocolo (Ex: DEN-123456)" class="flex-1 border border-slate-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-transparent uppercase font-mono transition">
+                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl font-medium transition flex items-center gap-2">
+                        Buscar
+                    </button>
+                </form>
+
+                <div id="track-result" class="hidden border-t border-slate-100 pt-8 animate-in">
+                    <div class="mb-6 flex justify-between items-start">
+                        <div>
+                            <p class="text-sm text-slate-500 font-semibold uppercase">Categoria</p>
+                            <p id="res-categoria" class="font-medium text-slate-800">--</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm text-slate-500 font-semibold uppercase">Data</p>
+                            <p id="res-data" class="font-medium text-slate-800">--</p>
+                        </div>
+                    </div>
+
+                    <h3 class="font-bold text-lg mb-4 text-slate-800">Status da Denúncia</h3>
+                    
+                    <div class="relative pl-2">
+                        <div class="status-item flex gap-4 pb-8 relative">
+                            <div class="status-line"></div>
+                            <div id="dot-recebida" class="status-dot"></div>
+                            <div>
+                                <h4 class="font-bold text-slate-800">Denúncia Recebida</h4>
+                                <p class="text-sm text-slate-500">A sua denúncia foi registada no sistema.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="status-item flex gap-4 pb-8 relative">
+                            <div class="status-line"></div>
+                            <div id="dot-analise" class="status-dot"></div>
+                            <div>
+                                <h4 class="font-bold text-slate-800">Em Análise</h4>
+                                <p class="text-sm text-slate-500">A equipa responsável está a avaliar os detalhes.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="status-item flex gap-4 pb-8 relative">
+                            <div class="status-line"></div>
+                            <div id="dot-encaminhada" class="status-dot"></div>
+                            <div>
+                                <h4 class="font-bold text-slate-800">Encaminhada</h4>
+                                <p class="text-sm text-slate-500">Enviada para as autoridades ou setor competente.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="status-item flex gap-4 relative">
+                            <div id="dot-concluida" class="status-dot"></div>
+                            <div>
+                                <h4 class="font-bold text-slate-800">Concluída</h4>
+                                <p class="text-sm text-slate-500">O caso foi verificado e encerrado.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="track-error" class="hidden text-center py-6 text-red-600 bg-red-50 rounded-xl mt-4">
+                    <i data-lucide="x-circle" class="w-8 h-8 mx-auto mb-2 opacity-80"></i>
+                    <p class="font-medium">Protocolo não encontrado.</p>
+                    <p class="text-sm opacity-80 mt-1">Verifique se digitou corretamente.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
